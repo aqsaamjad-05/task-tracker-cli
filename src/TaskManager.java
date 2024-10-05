@@ -26,6 +26,24 @@ public class TaskManager {
         System.out.println("Task added successfully (ID: " + id + ")");
     }
 
+    // updates a task 
+    public void updateTask(int id, String newDescription) {
+        // loop through the list of tasks
+        for (Task task : tasks) {
+            // if the task id matches the id being searched for
+            if (task.getId() == id) {
+                // update the description
+                task.setDescription(newDescription);
+                // save the updated list to the JSON file 
+                saveTasks(); 
+                // output a success message
+                System.out.println("Task updated successfully (ID: " + id + ")");
+                return;
+            }
+        }
+        System.out.println("Task with ID " + id + " not found.");
+    }
+
     // loads tasks from the JSON file
     private List<Task> loadTasks() {
         List<Task> taskList = new ArrayList<>();
