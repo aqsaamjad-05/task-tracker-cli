@@ -80,6 +80,7 @@ public class Task {
         // remove curly braces and split the string by commas
         String[] parts = json.replace("{", "").replace("}", "").split(",");
 
+        // variables to hold extracted values
         int id = 0;
         String description = "";
         String status = "";
@@ -92,6 +93,7 @@ public class Task {
             String key = keyValue[0].trim().replace("\"", "");
             String value = keyValue[1].trim().replace("\"", "");
 
+            // assign values to appropriate variables based on the key
             switch (key) {
                 case "id":
                     id = Integer.parseInt(value);
@@ -111,6 +113,7 @@ public class Task {
             }
         }
 
+        // Create a new Task object using the extracted values
         Task task = new Task(id, description);
         task.status = status;
         task.createdAt = createdAt;
