@@ -62,6 +62,59 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
         this.updatedAt = getCurrentTime();
+
     }
 
+    // convert Task to a JSON-like string
+    public String toJson() {
+        return "{"
+                + "\"id\":" + id + ","
+                + "\"description\":\"" + description + "\","
+                + "\"status\":\"" + status + "\","
+                + "\"createdAt\":\"" + createdAt + "\","
+                + "\"updatedAt\":\"" + updatedAt + "\""
+                + "}";
+    }
+
+    public static Task fromJson(String json) {
+        // remove curly braces and split the string by commas
+        String[] parts = json.replace("{", "").replace("}", "").split(",");
+
+        int id = 0;
+        String description = "";
+        String status = "";
+        String createdAt = "";
+        String updatedAt = "";
+
+        // iterate over the parts to assign values
+        for (String part : parts) {
+            String[] keyValue = part.split(":");
+            String key = keyValue[0].trim().replace("\"", "");
+            String value = keyValue[1].trim().replace("\"", "");
+
+            switch (key) {
+                case "id":
+                    id = Integer.parseInt(value);
+                    break;
+                case "description":
+                    description = value;
+                    break;
+                case "status":
+                    status = value;
+                    break;
+                case "createdAt":
+                    createdAt = value;
+                    break;
+                case "updatedAt":
+                    updatedAt = value;
+                    break;
+            }
+        }
+
+        Task task = new Task(id, description);
+        task.status = status;
+        task.createdAt = createdAt;
+        task.updatedAt = updatedAt;
+        return task;
+    }
 }
