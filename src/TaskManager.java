@@ -73,22 +73,23 @@ public class TaskManager {
         return taskList; // return the list of tasks (empty if no tasks were loaded)
     }
 
-    // saves tasks to the JSON file
+    // saves tasks to the JSON file with pretty-printing
     private void saveTasks() {
-        // start the array with an "["
-        StringBuilder json = new StringBuilder("[");
+        // start the array with an opening bracket
+        StringBuilder json = new StringBuilder("[\n");
         // loop through each task in the list
         for (int i = 0; i < tasks.size(); i++) {
-            // convert the task to a JSON string and append it
-            json.append(tasks.get(i).toJson());
-            // if this is not the last task in the list, append a comma to separate the JSON objects
+            // indent each JSON object for better readability
+            json.append("  ").append(tasks.get(i).toJson());
+            // if this is not the last task, append a comma
             if (i < tasks.size() - 1) {
                 json.append(",");
             }
+            // move to the next line for the next task
+            json.append("\n");
         }
-        // end the array with a "]"
+        // end the array with a closing bracket
         json.append("]");
-
         try {
             // write the JSON string to the tasks.json file
             Files.write(Paths.get(TASK_FILE_PATH), json.toString().getBytes());
@@ -97,4 +98,5 @@ public class TaskManager {
             System.out.println("Error writing to tasks file.");
         }
     }
+
 }
