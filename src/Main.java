@@ -9,5 +9,8 @@ public class Main {
         // add more tasks if needed
         taskManager.addTask("Write Java code");
         taskManager.addTask("Read a book");
+
+        // update a task
+        taskManager.updateTask(1, "buy groceries and petrol");
     }
 }
