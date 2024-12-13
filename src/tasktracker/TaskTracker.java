@@ -55,7 +55,23 @@ public class TaskTracker {
                     System.out.println("Error: Task ID must be a number.");
                 }
                 break;
-            
+                
+            case "mark-in-progress":
+            case "mark-done":
+                if (args.length < 2) {
+                    System.out.println("Error: Please provide the task ID to mark.");
+                    printUsage();
+                    return;
+                }
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    TaskStatus status = command.equals("mark-in-progress") ? TaskStatus.IN_PROGRESS : TaskStatus.DONE;
+                    markTaskStatus(id, status);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Task ID must be a number.");
+                }
+                break;
+                
 
             case "list":
                 // call listTasks() method
@@ -203,10 +219,10 @@ public class TaskTracker {
 
     private static void deleteTask(int id) {
         try {
-            // Load existing tasks
+            // load existing tasks
             List<Task> tasks = loadTasks();
     
-            // Find the task to delete
+            // find the task to delete
             Task taskToDelete = null;
             for (Task task : tasks) {
                 if (task.getId() == id) {
@@ -215,20 +231,51 @@ public class TaskTracker {
                 }
             }
     
-            // If task not found, display error message
+            // if task not found, display error message
             if (taskToDelete == null) {
                 System.out.println("Error: Task with ID " + id + " not found.");
                 return;
             }
     
-            // Remove the task and save the updated list
+            // remove the task and save the updated list
             tasks.remove(taskToDelete);
             saveTasks(tasks);
     
-            // Print success message
+            // print success message
             System.out.println("Task with ID " + id + " deleted successfully.");
         } catch (IOException e) {
             System.err.println("Error deleting task: " + e.getMessage());
+        }
+    }
+    
+    private static void markTaskStatus(int id, TaskStatus newStatus) {
+        try {
+            // load existing tasks
+            List<Task> tasks = loadTasks();
+    
+            // find the task
+            Task taskToMark = null;
+            for (Task task : tasks) {
+                if (task.getId() == id) {
+                    taskToMark = task;
+                    break;
+                }
+            }
+    
+            // if task is not found, display error
+            if (taskToMark == null) {
+                System.out.println("Error: Task with ID " + id + " not found.");
+                return;
+            }
+    
+            // update the task status
+            taskToMark.setStatus(newStatus);
+            saveTasks(tasks);
+    
+            // print success message
+            System.out.println("Task with ID " + id + " marked as " + newStatus + ".");
+        } catch (IOException e) {
+            System.err.println("Error updating task status: " + e.getMessage());
         }
     }
     
