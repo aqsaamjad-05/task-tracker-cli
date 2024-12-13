@@ -50,12 +50,6 @@ public class TaskTracker {
         // more commands will be added later
     }
 
-    // placeholder methods for future implementation
-    private static void addTask(String description) {
-        System.out.println("Adding task: " + description);
-        // will be implemented in future steps
-    }
-
     private static List<Task> loadTasks() throws IOException {
         File file = new File(TASKS_FILE);
         // create an empty file if it doesn't exist
@@ -121,6 +115,30 @@ public class TaskTracker {
             }
         } catch (IOException e) {
             System.err.println("Error reading tasks: " + e.getMessage());
+        }
+    }
+
+    private static void addTask(String description) {
+        try {
+            // load existing tasks
+            List<Task> tasks = loadTasks();
+
+            // generate unique ID
+            int newID = tasks.size() + 1;
+
+            // create new task 
+            Task newTask = new Task(newID, description);
+
+            // add to the task list
+            tasks.add(newTask);
+
+            // save updated task list to file
+            saveTasks(tasks);
+            
+            // print success message
+            System.out.println("Task added successfuly: " + newTask);
+        } catch (IOException e) {
+            System.err.println("Error saving task: " + e.getMessage());
         }
     }
 }
