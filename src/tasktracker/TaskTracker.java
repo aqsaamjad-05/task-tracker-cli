@@ -26,12 +26,23 @@ public class TaskTracker {
                     printUsage();
                     return;
                 }
-                // call addTask() method (to be implemented later)
+                // call addTask() method
                 addTask(args[1]);
                 break;
             
+            case "update":
+                if (args.length < 3) {
+                    System.out.println("Error: Please provide a task ID and a new task description");
+                    printUsage();
+                    return;
+                }
+                int taskId = Integer.parseInt(args[1]);  // task ID to update
+                String newDescription = args[2]; // new description for the task
+                updateTask(taskId, newDescription);
+                break;
+
             case "list":
-                // call listTasks() method (to be implemented later)
+                // call listTasks() method
                 listTasks();
                 break;
             
@@ -124,10 +135,10 @@ public class TaskTracker {
             List<Task> tasks = loadTasks();
 
             // generate unique ID
-            int newID = tasks.size() + 1;
+            int newId = tasks.size() + 1;
 
             // create new task 
-            Task newTask = new Task(newID, description);
+            Task newTask = new Task(newId, description);
 
             // add to the task list
             tasks.add(newTask);
@@ -139,6 +150,38 @@ public class TaskTracker {
             System.out.println("Task added successfuly: " + newTask);
         } catch (IOException e) {
             System.err.println("Error saving task: " + e.getMessage());
+        }
+    }
+
+    private static void updateTask(int taskId, String newDescription) {
+        try {
+            // load existing tasks
+            List<Task> tasks = loadTasks();
+
+            // find the task by ID
+            Task taskToUpdate = null;
+            for (Task task  : tasks) {
+                if (task.getId() == taskId) {
+                    taskToUpdate = task;
+                    break;
+                }
+            }
+
+            // check if task was found
+            if (taskToUpdate == null) {
+                System.out.println("Error: Task with ID " + taskId + " not found.");
+                return;
+            }
+
+            // update the task description and timestamp
+            taskToUpdate.setDescription(newDescription);
+
+            // save the updated tasks back to the file
+            saveTasks(tasks);
+
+            System.out.println("Task updated successfully: " + taskToUpdate);
+        } catch (IOException e) {
+            System.err.println("Error updating task: " + e.getMessage());
         }
     }
 }
