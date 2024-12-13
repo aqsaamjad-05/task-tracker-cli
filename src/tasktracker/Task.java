@@ -14,6 +14,8 @@ public class Task {
         this.id = id;
         this.description = description;
         this.status = status;
+        this.createdAt = LocalDateTime.now(); // set createdAt when the task is created
+        this.updatedAt = LocalDateTime.now(); // initialize updatedAt as the same time
     }
 
     // overloaded constructor for default status
