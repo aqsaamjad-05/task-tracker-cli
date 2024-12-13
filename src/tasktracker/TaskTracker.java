@@ -112,7 +112,16 @@ public class TaskTracker {
         System.out.println("    java TaskTrackerCLI delete 1");
     }
     
-
+    // method to find task by ID
+    private static Task findTaskById(int id, List<Task> tasks) {
+        for (Task task : tasks) {
+            if (task.getId() == id) {
+                return task;
+            }
+        }
+        return null;
+    }
+    
     private static List<Task> loadTasks() throws IOException {
         File file = new File(TASKS_FILE);
         // create an empty file if it doesn't exist
@@ -211,13 +220,7 @@ public class TaskTracker {
             List<Task> tasks = loadTasks();
 
             // find the task by ID
-            Task taskToUpdate = null;
-            for (Task task  : tasks) {
-                if (task.getId() == taskId) {
-                    taskToUpdate = task;
-                    break;
-                }
-            }
+            Task taskToUpdate = findTaskById(taskId, tasks);
 
             // check if task was found
             if (taskToUpdate == null) {
@@ -237,23 +240,17 @@ public class TaskTracker {
         }
     }
 
-    private static void deleteTask(int id) {
+    private static void deleteTask(int taskId) {
         try {
             // load existing tasks
             List<Task> tasks = loadTasks();
     
             // find the task to delete
-            Task taskToDelete = null;
-            for (Task task : tasks) {
-                if (task.getId() == id) {
-                    taskToDelete = task;
-                    break;
-                }
-            }
+            Task taskToDelete = findTaskById(taskId, tasks);
     
             // if task not found, display error message
             if (taskToDelete == null) {
-                System.out.println("Error: Task with ID " + id + " not found.");
+                System.out.println("Error: Task with ID " + taskId + " not found.");
                 return;
             }
     
@@ -262,29 +259,22 @@ public class TaskTracker {
             saveTasks(tasks);
     
             // print success message
-            System.out.println("Task with ID " + id + " deleted successfully.");
+            System.out.println("Task with ID " + taskId + " deleted successfully.");
         } catch (IOException e) {
             System.err.println("Error deleting task: " + e.getMessage());
         }
     }
     
-    private static void markTaskStatus(int id, TaskStatus newStatus) {
+    private static void markTaskStatus(int taskId, TaskStatus newStatus) {
         try {
             // load existing tasks
             List<Task> tasks = loadTasks();
     
             // find the task
-            Task taskToMark = null;
-            for (Task task : tasks) {
-                if (task.getId() == id) {
-                    taskToMark = task;
-                    break;
-                }
-            }
-    
+            Task taskToMark = findTaskById(taskId, tasks);
             // if task is not found, display error
             if (taskToMark == null) {
-                System.out.println("Error: Task with ID " + id + " not found.");
+                System.out.println("Error: Task with ID " + taskId + " not found.");
                 return;
             }
     
@@ -293,7 +283,7 @@ public class TaskTracker {
             saveTasks(tasks);
     
             // print success message
-            System.out.println("Task with ID " + id + " marked as " + newStatus + ".");
+            System.out.println("Task with ID " + taskId + " marked as " + newStatus + ".");
         } catch (IOException e) {
             System.err.println("Error updating task status: " + e.getMessage());
         }
