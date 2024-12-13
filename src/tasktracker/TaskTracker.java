@@ -71,12 +71,19 @@ public class TaskTracker {
                     System.out.println("Error: Task ID must be a number.");
                 }
                 break;
-                
 
             case "list":
-                // call listTasks() method
-                listTasks();
-                break;
+            if (args.length < 2) {
+                listTasks(); // List all tasks if no specific status is provided
+            } else {
+                try {
+                    TaskStatus status = TaskStatus.valueOf(args[1].toUpperCase().replace("-", "_"));
+                    listTasksByStatus(status);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: Invalid status. Use 'todo', 'in-progress', or 'done'.");
+                }
+            }
+            break;
             
             default:
                 // for any unknown command, show usage
@@ -278,5 +285,29 @@ public class TaskTracker {
             System.err.println("Error updating task status: " + e.getMessage());
         }
     }
+
+    private static void listTasksByStatus(TaskStatus status) {
+        try {
+            // load existing tasks
+            List<Task> tasks = loadTasks();
+    
+            // filter tasks by status
+            boolean found = false;
+            for (Task task : tasks) {
+                if (task.getStatus() == status) {
+                    System.out.println(task);
+                    found = true;
+                }
+            }
+    
+            // if no tasks found for the status
+            if (!found) {
+                System.out.println("No tasks found with status: " + status);
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading tasks: " + e.getMessage());
+        }
+    }
+    
     
 }
