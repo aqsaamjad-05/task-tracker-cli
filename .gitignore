@@ -3,3 +3,6 @@
 
 # Ignore build directories
 bin/
+
+# Ignore JSON file
+data/tasks.json
