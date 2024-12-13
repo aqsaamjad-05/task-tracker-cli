@@ -9,13 +9,16 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // constructor
-    public Task(int id, String description) {
+     // constructor
+     public Task(int id, String description, TaskStatus status) {
         this.id = id;
         this.description = description;
-        this.status = TaskStatus.TODO;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.status = status;
+    }
+
+    // overloaded constructor for default status
+    public Task(int id, String description) {
+        this(id, description, TaskStatus.TODO); // default status is TODO
     }
 
     // getters and setters
@@ -58,5 +61,15 @@ public class Task {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public String toJson() {
+        return "{" +
+                "\"id\": " + id + "," +
+                "\"description\": \"" + description + "\"," +
+                "\"status\": \"" + status + "\"," +
+                "\"createdAt\": \"" + createdAt + "\"," +
+                "\"updatedAt\": \"" + updatedAt + "\"" +
+                "}";
     }
 }
