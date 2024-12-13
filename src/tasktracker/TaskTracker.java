@@ -95,10 +95,23 @@ public class TaskTracker {
     // method to print usage instructions
     private static void printUsage() {
         System.out.println("Task Tracker CLI Usage:");
-        System.out.println("  java TaskTrackerCLI add \"Task description\"");
-        System.out.println("  java TaskTrackerCLI list");
-        // more commands will be added later
+        System.out.println("  java TaskTrackerCLI add \"Task description\"             - Add a new task with a description.");
+        System.out.println("  java TaskTrackerCLI update <task-id> \"New task description\" - Update the description of an existing task.");
+        System.out.println("  java TaskTrackerCLI delete <task-id>                     - Delete a task by its ID.");
+        System.out.println("  java TaskTrackerCLI mark-in-progress <task-id>            - Mark a task as 'in-progress'.");
+        System.out.println("  java TaskTrackerCLI mark-done <task-id>                   - Mark a task as 'done'.");
+        System.out.println("  java TaskTrackerCLI list                                  - List all tasks.");
+        System.out.println("  java TaskTrackerCLI list <status>                         - List tasks by status (todo, in-progress, done).");
+        System.out.println("  Valid statuses are: 'todo', 'in-progress', 'done'.");
+        System.out.println("  Example usage:");
+        System.out.println("    java TaskTrackerCLI add \"Buy groceries\"");
+        System.out.println("    java TaskTrackerCLI list");
+        System.out.println("    java TaskTrackerCLI list done");
+        System.out.println("    java TaskTrackerCLI update 1 \"Buy groceries and cook dinner\"");
+        System.out.println("    java TaskTrackerCLI mark-in-progress 1");
+        System.out.println("    java TaskTrackerCLI delete 1");
     }
+    
 
     private static List<Task> loadTasks() throws IOException {
         File file = new File(TASKS_FILE);
