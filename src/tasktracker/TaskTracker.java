@@ -143,7 +143,7 @@ public class TaskTracker {
             Task task = tasks.get(i);
             jsonBuilder.append(task.toJson());
             if (i < tasks.size() - 1) {
-                jsonBuilder.append(",");
+                jsonBuilder.append("," + System.lineSeparator());
             }
         }
         jsonBuilder.append("]");
