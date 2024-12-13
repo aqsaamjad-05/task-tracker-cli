@@ -41,6 +41,22 @@ public class TaskTracker {
                 updateTask(taskId, newDescription);
                 break;
 
+                case "delete":
+                // Check if an ID is provided
+                if (args.length < 2) {
+                    System.out.println("Error: Please provide the task ID to delete.");
+                    printUsage();
+                    return;
+                }
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    deleteTask(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Task ID must be a number.");
+                }
+                break;
+            
+
             case "list":
                 // call listTasks() method
                 listTasks();
@@ -184,4 +200,36 @@ public class TaskTracker {
             System.err.println("Error updating task: " + e.getMessage());
         }
     }
+
+    private static void deleteTask(int id) {
+        try {
+            // Load existing tasks
+            List<Task> tasks = loadTasks();
+    
+            // Find the task to delete
+            Task taskToDelete = null;
+            for (Task task : tasks) {
+                if (task.getId() == id) {
+                    taskToDelete = task;
+                    break;
+                }
+            }
+    
+            // If task not found, display error message
+            if (taskToDelete == null) {
+                System.out.println("Error: Task with ID " + id + " not found.");
+                return;
+            }
+    
+            // Remove the task and save the updated list
+            tasks.remove(taskToDelete);
+            saveTasks(tasks);
+    
+            // Print success message
+            System.out.println("Task with ID " + id + " deleted successfully.");
+        } catch (IOException e) {
+            System.err.println("Error deleting task: " + e.getMessage());
+        }
+    }
+    
 }
